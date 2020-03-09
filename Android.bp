@@ -50,4 +50,10 @@ cc_library {
         enabled: false,
     },
     version_script: "libartpalette.map.txt",
+    stubs: {
+        versions: [
+            "1",
+        ],
+        symbol_file: "libartpalette.map.txt",
+    },
 }
