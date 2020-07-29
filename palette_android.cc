@@ -31,7 +31,6 @@
 #include <cutils/ashmem.h>
 #include <cutils/sched_policy.h>
 #include <cutils/trace.h>
-#include <log/event_tag_map.h>
 #include <tombstoned/tombstoned.h>
 #include <utils/Thread.h>
 
