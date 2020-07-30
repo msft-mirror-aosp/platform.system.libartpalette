@@ -30,7 +30,6 @@
 #include <android-base/macros.h>
 #include <cutils/ashmem.h>
 #include <cutils/trace.h>
-#include <log/event_tag_map.h>
 #include <processgroup/processgroup.h>
 #include <processgroup/sched_policy.h>
 #include <tombstoned/tombstoned.h>
