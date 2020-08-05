@@ -229,3 +229,8 @@ enum PaletteStatus PaletteAshmemSetProtRegion(int fd, int prot) {
     }
     return PaletteStatus::kOkay;
 }
+
+enum PaletteStatus PaletteGetHooks(PaletteHooks** hooks) {
+  *hooks = nullptr;
+  return PaletteStatus::kNotSupported;
+}
