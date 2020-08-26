@@ -31,7 +31,6 @@
 #include <cutils/ashmem.h>
 #include <cutils/sched_policy.h>
 #include <cutils/trace.h>
-#include <log/event_tag_map.h>
 #include <tombstoned/tombstoned.h>
 #include <utils/Thread.h>
 
@@ -229,4 +228,9 @@ enum PaletteStatus PaletteAshmemSetProtRegion(int fd, int prot) {
         return PaletteStatus::kCheckErrno;
     }
     return PaletteStatus::kOkay;
+}
+
+enum PaletteStatus PaletteGetHooks(PaletteHooks** hooks) {
+  *hooks = nullptr;
+  return PaletteStatus::kNotSupported;
 }
