@@ -29,8 +29,9 @@
 #include <android-base/logging.h>
 #include <android-base/macros.h>
 #include <cutils/ashmem.h>
-#include <cutils/sched_policy.h>
 #include <cutils/trace.h>
+#include <processgroup/processgroup.h>
+#include <processgroup/sched_policy.h>
 #include <tombstoned/tombstoned.h>
 #include <utils/Thread.h>
 
@@ -65,18 +66,21 @@ enum PaletteStatus PaletteSchedSetPriority(int32_t tid, int32_t managed_priority
         return PaletteStatus::kInvalidArgument;
     }
     int new_nice = kNiceValues[managed_priority - art::palette::kMinManagedThreadPriority];
+    int curr_nice = getpriority(PRIO_PROCESS, tid);
 
-    // TODO: b/18249098 The code below is broken. It uses getpriority() as a proxy for whether a
-    // thread is already in the SP_FOREGROUND cgroup. This is not necessarily true for background
-    // processes, where all threads are in the SP_BACKGROUND cgroup. This means that callers will
-    // have to call setPriority twice to do what they want :
-    //
-    //     Thread.setPriority(Thread.MIN_PRIORITY);  // no-op wrt to cgroups
-    //     Thread.setPriority(Thread.MAX_PRIORITY);  // will actually change cgroups.
+    if (curr_nice == new_nice) {
+        return PaletteStatus::kOkay;
+    }
+
     if (new_nice >= ANDROID_PRIORITY_BACKGROUND) {
-        set_sched_policy(tid, SP_BACKGROUND);
-    } else if (getpriority(PRIO_PROCESS, tid) >= ANDROID_PRIORITY_BACKGROUND) {
-        set_sched_policy(tid, SP_FOREGROUND);
+        SetTaskProfiles(tid, {"SCHED_SP_BACKGROUND"}, true);
+    } else if (curr_nice >= ANDROID_PRIORITY_BACKGROUND) {
+        SchedPolicy policy;
+        // Change to the sched policy group of the process.
+        if (get_sched_policy(getpid(), &policy) != 0) {
+            policy = SP_FOREGROUND;
+        }
+        SetTaskProfiles(tid, {get_sched_policy_profile_name(policy)}, true);
     }
 
     if (setpriority(PRIO_PROCESS, tid, new_nice) != 0) {
