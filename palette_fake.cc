@@ -72,12 +72,12 @@ palette_status_t PaletteTraceEnd() {
 }
 
 palette_status_t PaletteTraceIntegerValue(const char* name ATTRIBUTE_UNUSED,
-                                            int32_t value ATTRIBUTE_UNUSED) {
+                                          int32_t value ATTRIBUTE_UNUSED) {
     return PALETTE_STATUS_OK;
 }
 
 palette_status_t PaletteAshmemCreateRegion(const char* name ATTRIBUTE_UNUSED,
-                                             size_t size ATTRIBUTE_UNUSED, int* fd) {
+                                           size_t size ATTRIBUTE_UNUSED, int* fd) {
     *fd = -1;
     return PALETTE_STATUS_NOT_SUPPORTED;
 }
@@ -87,6 +87,11 @@ palette_status_t PaletteAshmemSetProtRegion(int fd ATTRIBUTE_UNUSED, int prot AT
 }
 
 palette_status_t PaletteGetHooks(PaletteHooks** hooks) {
-  *hooks = nullptr;
-  return PALETTE_STATUS_NOT_SUPPORTED;
+    *hooks = nullptr;
+    return PALETTE_STATUS_NOT_SUPPORTED;
+}
+
+palette_status_t PaletteCreateOdrefreshStagingDirectory(const char** staging_dir) {
+    *staging_dir = nullptr;
+    return PALETTE_STATUS_NOT_SUPPORTED;
 }

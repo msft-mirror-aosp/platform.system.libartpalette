@@ -23,6 +23,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+#include <filesystem>
 #include <mutex>
 
 #include <android-base/file.h>
@@ -32,6 +33,7 @@
 #include <cutils/trace.h>
 #include <processgroup/processgroup.h>
 #include <processgroup/sched_policy.h>
+#include <selinux/selinux.h>
 #include <tombstoned/tombstoned.h>
 #include <utils/Thread.h>
 
@@ -235,6 +237,33 @@ palette_status_t PaletteAshmemSetProtRegion(int fd, int prot) {
 }
 
 palette_status_t PaletteGetHooks(PaletteHooks** hooks) {
-  *hooks = nullptr;
-  return PALETTE_STATUS_NOT_SUPPORTED;
+    *hooks = nullptr;
+    return PALETTE_STATUS_NOT_SUPPORTED;
+}
+
+palette_status_t PaletteCreateOdrefreshStagingDirectory(const char** staging_dir) {
+    static constexpr const char* kStagingDirectory = "/data/misc/apexdata/com.android.art/staging";
+
+    std::error_code ec;
+    if (std::filesystem::exists(kStagingDirectory, ec)) {
+        if (!std::filesystem::remove_all(kStagingDirectory, ec)) {
+            LOG(ERROR) << ec.message()
+                       << "Could not remove existing staging directory: " << kStagingDirectory;
+            DCHECK_EQ(ec.value(), errno);
+            return PALETTE_STATUS_CHECK_ERRNO;
+        }
+    }
+
+    if (mkdir(kStagingDirectory, S_IRWXU) != 0) {
+        PLOG(ERROR) << "Could not set permissions on staging directory: " << kStagingDirectory;
+        return PALETTE_STATUS_CHECK_ERRNO;
+    }
+
+    if (setfilecon(kStagingDirectory, "u:object_r:apex_art_staging_data_file:s0") != 0) {
+        PLOG(ERROR) << "Could not set label on staging directory: " << kStagingDirectory;
+        return PALETTE_STATUS_CHECK_ERRNO;
+    }
+
+    *staging_dir = kStagingDirectory;
+    return PALETTE_STATUS_OK;
 }
