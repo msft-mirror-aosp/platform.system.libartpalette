@@ -19,6 +19,7 @@
 // ART which now ships as an APEX and not part of the system.
 cc_library {
     name: "libartpalette-system",
+    cpp_std: "experimental",
     compile_multilib: "both",
     header_libs: ["libartpalette-headers"],
     host_supported: true,
@@ -32,7 +33,9 @@ cc_library {
                 "liblog",
                 "libprocessgroup",
                 "libtombstoned_client",
+                "libselinux",
             ],
+            static_libs: ["libc++fs"],
         },
         host: {
             header_libs: ["libbase_headers"],
