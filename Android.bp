@@ -17,6 +17,10 @@
 // libartpalette-system is the implementation of the platform
 // abstraction layer for ART. It is intended to be dynamically loaded by
 // ART which now ships as an APEX and not part of the system.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
 cc_library {
     name: "libartpalette-system",
     cpp_std: "experimental",
