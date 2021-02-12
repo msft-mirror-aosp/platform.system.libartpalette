@@ -78,6 +78,7 @@ sdk {
         },
         android: {
             native_shared_libs: [
+                "heapprofd_client_api",
                 "liblog",
             ],
         },
