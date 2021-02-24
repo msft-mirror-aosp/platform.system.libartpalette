@@ -17,8 +17,13 @@
 // libartpalette-system is the implementation of the platform
 // abstraction layer for ART. It is intended to be dynamically loaded by
 // ART which now ships as an APEX and not part of the system.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
 cc_library {
     name: "libartpalette-system",
+    cpp_std: "experimental",
     compile_multilib: "both",
     header_libs: ["libartpalette-headers"],
     host_supported: true,
@@ -32,7 +37,9 @@ cc_library {
                 "liblog",
                 "libprocessgroup",
                 "libtombstoned_client",
+                "libselinux",
             ],
+            static_libs: ["libc++fs"],
         },
         host: {
             header_libs: ["libbase_headers"],
@@ -75,6 +82,7 @@ sdk {
         },
         android: {
             native_shared_libs: [
+                "heapprofd_client_api",
                 "liblog",
             ],
         },
