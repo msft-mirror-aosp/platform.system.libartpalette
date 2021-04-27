@@ -39,11 +39,6 @@
 
 #include "palette_system.h"
 
-palette_status_t PaletteGetVersion(int32_t* version) {
-    *version = art::palette::kPaletteVersion;
-    return PALETTE_STATUS_OK;
-}
-
 // Conversion map for "nice" values.
 //
 // We use Android thread priority constants to be consistent with the rest
