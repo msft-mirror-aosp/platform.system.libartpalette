@@ -25,7 +25,10 @@ cc_library {
     name: "libartpalette-system",
     cpp_std: "experimental",
     compile_multilib: "both",
-    header_libs: ["libartpalette-headers"],
+    header_libs: [
+        "libartpalette-headers",
+        "jni_headers",
+    ],
     host_supported: true,
     target: {
         android: {
