@@ -32,7 +32,10 @@ cc_library {
     host_supported: true,
     target: {
         android: {
-            srcs: ["palette_android.cc"],
+            srcs: [
+                "palette_android.cc",
+                "palette_android_partner.cc",
+            ],
             header_libs: ["libbase_headers"],
             shared_libs: [
                 "libbase",
@@ -86,6 +89,7 @@ sdk {
         android: {
             native_shared_libs: [
                 "heapprofd_client_api",
+                "libbinder_ndk",
                 "liblog",
             ],
             native_static_libs: [
