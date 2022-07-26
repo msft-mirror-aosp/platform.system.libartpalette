@@ -82,6 +82,9 @@ sdk {
     native_shared_libs: [
         "libartpalette-system",
     ],
+    native_static_libs: [
+        "libcap",
+    ],
     target: {
         darwin: {
             enabled: false,
