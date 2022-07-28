@@ -66,6 +66,7 @@ cc_library {
     stubs: {
         versions: [
             "1",
+            "2",
         ],
         symbol_file: "libartpalette.map.txt",
     },
