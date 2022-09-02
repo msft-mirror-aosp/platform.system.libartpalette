@@ -66,6 +66,7 @@ cc_library {
     stubs: {
         versions: [
             "1",
+            "2",
         ],
         symbol_file: "libartpalette.map.txt",
     },
@@ -81,6 +82,9 @@ sdk {
     host_supported: true,
     native_shared_libs: [
         "libartpalette-system",
+    ],
+    native_static_libs: [
+        "libcap",
     ],
     target: {
         darwin: {
