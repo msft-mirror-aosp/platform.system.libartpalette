@@ -67,6 +67,7 @@ cc_library {
         versions: [
             "1",
             "2",
+            "3",
         ],
         symbol_file: "libartpalette.map.txt",
     },
