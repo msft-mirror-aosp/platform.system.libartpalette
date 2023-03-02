@@ -31,11 +31,14 @@
 #include <android-base/macros.h>
 #include <cutils/ashmem.h>
 #include <cutils/trace.h>
+#include <processgroup/processgroup.h>
 #include <selinux/selinux.h>
 #include <tombstoned/tombstoned.h>
 #include <utils/Thread.h>
 
 #include "palette_system.h"
+
+// Methods in version 1 API, corresponding to SDK level 31.
 
 // Conversion map for "nice" values.
 //
@@ -243,4 +246,16 @@ palette_status_t PaletteCreateOdrefreshStagingDirectory(const char** staging_dir
 
   *staging_dir = kStagingDirectory;
   return PALETTE_STATUS_OK;
+}
+
+// Methods in version 3 API, corresponding to SDK level UpsideDownCake.
+
+palette_status_t PaletteSetTaskProfiles(int32_t tid, const char* const profiles[],
+                                        size_t profiles_len) {
+  std::vector<std::string> p;
+  p.reserve(profiles_len);
+  for (int i = 0; i < profiles_len; ++i) {
+    p.push_back(profiles[i]);
+  }
+  return SetTaskProfiles(tid, p, false) ? PALETTE_STATUS_OK : PALETTE_STATUS_FAILED_CHECK_LOG;
 }
