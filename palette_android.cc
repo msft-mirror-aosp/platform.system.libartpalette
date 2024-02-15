@@ -38,8 +38,6 @@
 
 #include "palette_system.h"
 
-// Methods in version 1 API, corresponding to SDK level 31.
-
 // Conversion map for "nice" values.
 //
 // We use Android thread priority constants to be consistent with the rest
@@ -57,6 +55,9 @@ static const int kNiceValues[art::palette::kNumManagedThreadPriorities] = {
     ANDROID_PRIORITY_URGENT_DISPLAY + 2,
     ANDROID_PRIORITY_URGENT_DISPLAY  // 10 (MAX_PRIORITY)
 };
+
+// Unless explicitly mentioned otherwise, the following methods have been
+// introduced in version 1 API, corresponding to SDK level 31.
 
 palette_status_t PaletteSchedSetPriority(int32_t tid, int32_t managed_priority) {
   if (managed_priority < art::palette::kMinManagedThreadPriority ||
@@ -248,8 +249,7 @@ palette_status_t PaletteCreateOdrefreshStagingDirectory(const char** staging_dir
   return PALETTE_STATUS_OK;
 }
 
-// Methods in version 3 API, corresponding to SDK level UpsideDownCake.
-
+// Introduced in version 3 API, corresponding to SDK level 34.
 palette_status_t PaletteSetTaskProfiles(int32_t tid, const char* const profiles[],
                                         size_t profiles_len) {
   std::vector<std::string> p;
