@@ -90,6 +90,7 @@ cc_library {
         // Microdroid needs this library to be able to run odrefresh and dex2oat
         // in the pVM, but it doesn't make any calls to it itself.
         "//packages/modules/Virtualization/microdroid",
+        "//visibility:any_system_partition",
     ],
 }
 
