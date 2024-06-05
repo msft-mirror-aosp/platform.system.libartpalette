@@ -26,11 +26,12 @@
 
 #include "palette_system.h"
 
-// Methods in version 1 API, corresponding to SDK level 31.
-
 // Cached thread priority for testing. No thread priorities are ever affected.
 static std::mutex g_tid_priority_map_mutex;
 static std::map<int32_t, int32_t> g_tid_priority_map;
+
+// Unless explicitly mentioned otherwise, the following methods have been
+// introduced in version 1 API, corresponding to SDK level 31.
 
 palette_status_t PaletteSchedSetPriority(int32_t tid, int32_t priority) {
   if (priority < art::palette::kMinManagedThreadPriority ||
@@ -130,8 +131,7 @@ palette_status_t PaletteNotifyEndJniInvocation(JNIEnv* env ATTRIBUTE_UNUSED) {
   return PALETTE_STATUS_OK;
 }
 
-// Methods in version 2 API, corresponding to SDK level 33.
-
+// Introduced in version 2 API, corresponding to SDK level 33.
 palette_status_t PaletteReportLockContention(
     JNIEnv* env ATTRIBUTE_UNUSED, int32_t wait_ms ATTRIBUTE_UNUSED,
     const char* filename ATTRIBUTE_UNUSED, int32_t line_number ATTRIBUTE_UNUSED,
@@ -141,10 +141,16 @@ palette_status_t PaletteReportLockContention(
   return PALETTE_STATUS_OK;
 }
 
-// Methods in version 3 API, corresponding to SDK level UpsideDownCake.
-
+// Introduced in version 3 API, corresponding to SDK level 34.
 palette_status_t PaletteSetTaskProfiles(int32_t tid ATTRIBUTE_UNUSED,
                                         const char* const profiles[] ATTRIBUTE_UNUSED,
                                         size_t profiles_len ATTRIBUTE_UNUSED) {
+  return PALETTE_STATUS_OK;
+}
+
+// Introduced in version 4 API, corresponding to SDK level 36.
+palette_status_t PaletteDebugStoreGetString(char* result ATTRIBUTE_UNUSED,
+                                            size_t max_size ATTRIBUTE_UNUSED) {
+  result[0] = '\0';
   return PALETTE_STATUS_OK;
 }
