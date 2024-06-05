@@ -31,6 +31,7 @@
 #include <android-base/macros.h>
 #include <cutils/ashmem.h>
 #include <cutils/trace.h>
+#include <debugstore/debugstore_cxx_bridge.rs.h>
 #include <processgroup/processgroup.h>
 #include <selinux/selinux.h>
 #include <tombstoned/tombstoned.h>
@@ -258,4 +259,15 @@ palette_status_t PaletteSetTaskProfiles(int32_t tid, const char* const profiles[
     p.push_back(profiles[i]);
   }
   return SetTaskProfiles(tid, p, false) ? PALETTE_STATUS_OK : PALETTE_STATUS_FAILED_CHECK_LOG;
+}
+
+// Introduced in version 4 API, corresponding to SDK level 36.
+palette_status_t PaletteDebugStoreGetString(char* result, size_t max_size) {
+  if (result == nullptr || max_size == 0) {
+    return PALETTE_STATUS_INVALID_ARGUMENT;
+  }
+  std::string store_string = static_cast<std::string>(android::debugstore::debug_store_to_string());
+  strncpy(result, store_string.c_str(), max_size - 1);
+  result[max_size - 1] = '\0';
+  return PALETTE_STATUS_OK;
 }
