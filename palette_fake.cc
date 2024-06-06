@@ -147,3 +147,10 @@ palette_status_t PaletteSetTaskProfiles(int32_t tid ATTRIBUTE_UNUSED,
                                         size_t profiles_len ATTRIBUTE_UNUSED) {
   return PALETTE_STATUS_OK;
 }
+
+// Introduced in version 4 API, corresponding to SDK level 36.
+palette_status_t PaletteDebugStoreGetString(char* result ATTRIBUTE_UNUSED,
+                                            size_t max_size ATTRIBUTE_UNUSED) {
+  result[0] = '\0';
+  return PALETTE_STATUS_OK;
+}
