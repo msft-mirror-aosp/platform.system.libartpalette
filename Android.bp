@@ -40,12 +40,12 @@ cc_library {
             shared_libs: [
                 "libbase",
                 "libcutils",
+                "libdebugstore_cxx",
                 "liblog",
                 "libprocessgroup",
                 "libtombstoned_client",
                 "libselinux",
             ],
-            static_libs: ["libc++fs"],
         },
         host: {
             header_libs: ["libbase_headers"],
@@ -68,6 +68,7 @@ cc_library {
             "1",
             "2",
             "3",
+            "4",
         ],
         symbol_file: "libartpalette.map.txt",
     },
