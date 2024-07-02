@@ -46,7 +46,6 @@ cc_library {
                 "libtombstoned_client",
                 "libselinux",
             ],
-            static_libs: ["libc++fs"],
         },
         host: {
             header_libs: ["libbase_headers"],
