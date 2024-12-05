@@ -115,20 +115,15 @@ sdk {
         },
         android: {
             native_shared_libs: [
-                "heapprofd_client_api",
                 "libbinder_ndk",
                 "liblog",
-            ],
-            native_static_libs: [
-                "libperfetto_client_experimental",
-                "perfetto_trace_protos",
             ],
         },
         not_windows: {
             native_libs: [
                 "liblog",
             ],
-        }
+        },
     },
 }
 
