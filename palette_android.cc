@@ -42,7 +42,7 @@
 // Conversion map for "nice" values.
 //
 // We use Android thread priority constants to be consistent with the rest
-// of the system.  In some cases adjacent entries may overlap.
+// of the system.
 //
 static const int kNiceValues[art::palette::kNumManagedThreadPriorities] = {
     ANDROID_PRIORITY_LOWEST,  // 1 (MIN_PRIORITY)
@@ -95,6 +95,17 @@ palette_status_t PaletteSchedGetPriority(int32_t tid, /*out*/ int32_t* managed_p
     }
   }
   *managed_priority = art::palette::kMaxManagedThreadPriority;
+  return PALETTE_STATUS_OK;
+}
+
+// Introduced in version 5 API, corresponding to SDK level 36.1.
+// Intended as a replacement for the above.
+palette_status_t PaletteMapPriority(int32_t managed_priority, /*out*/ int* result) {
+  if (managed_priority < art::palette::kMinManagedThreadPriority ||
+      managed_priority > art::palette::kMaxManagedThreadPriority) {
+    return PALETTE_STATUS_INVALID_ARGUMENT;
+  }
+  *result = kNiceValues[managed_priority - art::palette::kMinManagedThreadPriority];
   return PALETTE_STATUS_OK;
 }
 

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// This is essentially, but not quite, a copy of art/libartpalette/system/palette_fake.cc.
+// THEY SHOULD BE UPDATED AT THE SAME TIME.
+// TODO(b/265435354): Reconstruct if / why this is necessary.
+
 #include "palette/palette.h"
 
 #include <stdbool.h>
@@ -27,6 +31,8 @@
 #include "palette_system.h"
 
 // Cached thread priority for testing. No thread priorities are ever affected.
+// Assumes thread priority is adjusted only through this interface, which is incorrect for
+// production code, but valid for relevant tests.
 static std::mutex g_tid_priority_map_mutex;
 static std::map<int32_t, int32_t> g_tid_priority_map;
 
@@ -50,6 +56,18 @@ palette_status_t PaletteSchedGetPriority(int32_t tid,
     g_tid_priority_map[tid] = art::palette::kNormalManagedThreadPriority;
   }
   *priority = g_tid_priority_map[tid];
+  return PALETTE_STATUS_OK;
+}
+
+// Introduced in version 5 API, corresponding to SDK level 36.1.
+palette_status_t PaletteMapPriority(int32_t managed_priority, /*out*/ int* result) {
+  if (managed_priority < art::palette::kMinManagedThreadPriority ||
+      managed_priority > art::palette::kMaxManagedThreadPriority) {
+    return PALETTE_STATUS_INVALID_ARGUMENT;
+  }
+  // Some test code assumes these are monotically decreasing, so we can reconstruct priority
+  // from niceness.
+  *result = 10 - 2 * managed_priority;
   return PALETTE_STATUS_OK;
 }
 

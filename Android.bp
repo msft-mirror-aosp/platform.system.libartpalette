@@ -69,6 +69,7 @@ cc_library {
             "2",
             "3",
             "4",
+            "5",
         ],
         symbol_file: "libartpalette.map.txt",
     },
